@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Socket.IO Test - User 1</title>
+</head>
+<body>
+  <h2>User 1 Chat</h2>
+  <input id="email" placeholder="Email" />
+  <input id="password" type="password" placeholder="Password" />
+  <button onclick="login()">Login</button>
+  <button onclick="sendMessage()">Send Message to User 2</button>
+  <button onclick="joinGroup()">Join Group</button>
+  <button onclick="sendGroupMessage()">Send Group Message</button>
+  <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+  <script>
+    let socket;
+    let jwtToken = null;
+    let myUserId = null;
+    const user2Id = "79a96c8e-6cc1-42f5-aee2-97c5fe7b5816"; // User 2's ID
+
+    function login() {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      fetch("http://localhost:3000/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          jwtToken = data.access_token;
+          // Try to get userId from response, fallback to prompt if not present
+          if (data.user && data.user.id) {
+            myUserId = data.user.id;
+          } else {
+            myUserId = prompt("Enter your user ID (not found in login response):");
+          }
+          connectSocket();
+        });
+    }
+
+    function connectSocket() {
+      socket = io("http://localhost:3000");
+      socket.on("connect", () => {
+        console.log("Connected as User 1:", socket.id);
+        socket.emit("register", { token: jwtToken });
+      });
+      socket.on("privateMessage", (data) => {
+        console.log("📩 Message received:", data);
+      });
+      socket.on("groupMessage", (data) => {
+        console.log("📢 Group message received:", data);
+      });
+    }
+
+    function sendMessage() {
+      if (!socket) return alert("Please login first!");
+      socket.emit("privateMessage", {
+        to: user2Id, // Always send to User 2
+        message: "👋 Hello from User 1!"
+      });
+    }
+    function joinGroup() {
+      if (!socket) return alert("Please login first!");
+      socket.emit("joinGroup", { group: "test-group" });
+    }
+    function sendGroupMessage() {
+      if (!socket) return alert("Please login first!");
+      socket.emit("groupMessage", {
+        group: "test-group",
+        message: "Hello group from User 1!"
+      });
+    }
+  </script>
+</body>
+</html>
