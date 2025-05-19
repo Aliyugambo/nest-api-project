@@ -22,7 +22,7 @@ This API provides a real-time chat system using NestJS, supporting both REST and
 
 ### 1. Clone the Repository
 ```bash
-git clone <your-repo-url>
+git clone <https://github.com/Aliyugambo/nest-api-project.git>
 cd nest-api-project
 ```
 
