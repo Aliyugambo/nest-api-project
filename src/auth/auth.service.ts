@@ -62,7 +62,9 @@ export class AuthService {
       },
     });
 
-    const verifyUrl = `http://localhost:3000/auth/verify-email?token=${token}`;
+    // Use environment variable for base URL, fallback to localhost
+    const baseUrl = process.env.APP_BASE_URL || 'http://localhost:3000';
+    const verifyUrl = `${baseUrl}/auth/verify-email?token=${token}`;
 
     await transporter.sendMail({
       from: process.env.SMTP_FROM,

@@ -13,7 +13,7 @@ function setupSwagger(app: INestApplication) {
   const userConfig = new DocumentBuilder()
     .setTitle('User API')
     .setDescription(
-      `API documentation for users\n\n---\n\n## WebSocket Chat Gateway\n\n- **WebSocket URL:** ws://localhost:3000\n\n### Events\n- \`register\`: { token }\n- \`privateMessage\`: { to, message }\n- \`groupMessage\`: { group, message }\n- \`joinGroup\`: { group }\n- \`leaveGroup\`: { group }\n- \`fetchPrivateHistory\`: { recipient }\n- \`fetchGroupHistory\`: { group }\n\nSee REST API docs for authentication and user management.\n\nYou can use browser clients or Socket.IO tools to interact with these events.\n\n---\n`,
+      `API documentation for users\n\n---\n\n## WebSocket Chat Gateway\n\n- **WebSocket URL:** ws://https://nest-api-project-tlex.onrender.com\n\n### Events\n- \`register\`: { token }\n- \`privateMessage\`: { to, message }\n- \`groupMessage\`: { group, message }\n- \`joinGroup\`: { group }\n- \`leaveGroup\`: { group }\n- \`fetchPrivateHistory\`: { recipient }\n- \`fetchGroupHistory\`: { group }\n\nSee REST API docs for authentication and user management.\n\nYou can use browser clients or Socket.IO tools to interact with these events.\n\n---\n`,
     )
     .setVersion('1.0')
     .addBearerAuth()
