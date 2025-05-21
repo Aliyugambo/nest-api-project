@@ -48,4 +48,10 @@ export class UsersService {
       order: { createdAt: 'ASC' },
     });
   }
+
+  async getProfile(userId: string) {
+    return this.privateMessageRepository.manager
+      .getRepository('User')
+      .findOne({ where: { id: userId } });
+  }
 }

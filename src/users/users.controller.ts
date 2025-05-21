@@ -23,8 +23,8 @@ export class UsersController {
   @ApiOperation({ summary: 'Get user profile' })
   @UseGuards(JwtAuthGuard)
   @Get('profile')
-  getProfile(@Req() req) {
-    return req.user; // { id, email, role }
+  async getProfile(@Req() req) {
+    return this.usersService.getProfile(req.user.id);
   }
 
   @ApiOperation({ summary: 'Fetch private message history with a recipient' })
