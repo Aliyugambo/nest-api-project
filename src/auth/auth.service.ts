@@ -53,19 +53,19 @@ export class AuthService {
 
   async sendVerificationEmail(email: string, token: string) {
     const transporter = nodemailer.createTransport({
-      host: 'smtp.mailersend.net',
-      port: 587,
-      secure: false, // true for 465, false for other ports
+      host: process.env.SMTP_HOST,
+      port: parseInt(process.env.SMTP_PORT, 10),
+      secure: process.env.SMTP_SECURE === 'true',
       auth: {
-        user: 'MS_0XPI6e@test-y7zpl9886z545vx6.mlsender.net', // Replace with your MailSend username
-        pass: 'mssp.qSL4GgL.vywj2lpkonjg7oqz.rXTxXtJ', // Replace with your MailSend password
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS,
       },
     });
 
     const verifyUrl = `http://localhost:3000/auth/verify-email?token=${token}`;
 
     await transporter.sendMail({
-      from: 'no-reply@test-y7zpl9886z545vx6.mlsender.net', // Replace with a valid sender email
+      from: process.env.SMTP_FROM,
       to: email,
       subject: 'Verify your email',
       html: `<p>Click to verify your email: <a href="${verifyUrl}">${verifyUrl}</a></p>`,
